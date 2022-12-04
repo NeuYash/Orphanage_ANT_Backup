@@ -22,6 +22,7 @@ import Business.WorkQueue.LabTestWorkRequest;
 import Business.WorkQueue.PharmacistWorkRequest;
 import Business.WorkQueue.WorkRequest;
 import java.awt.Component;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Nidhi
  */
 public class AssignedChildJPanel extends javax.swing.JPanel {
-    
+
     private JPanel userProcessContainer;
     private Enterprise enterprise;
     private UserAccount userAccount;
@@ -46,134 +47,110 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
     private ChildDirectory childdirectory;
     private Child child;
     private LabOrganization labOrganization;
-    
+
     double temperature;
     double pulserate;
     double BP;
     double respirationrate;
-        Network network;
-    
-    
+    Network network;
 
     /**
      * Creates new form AssignedChildJPanel
      */
-    
+    public AssignedChildJPanel(JPanel userProcessContainer, DoctorWorkRequest request, Child child, UserAccount userAccount, DoctorOrganization doctororganization, Enterprise enterprise, EcoSystem business, ChildDirectory directory) {
 
-    
-
-
-    
-
-    public AssignedChildJPanel(JPanel userProcessContainer, DoctorWorkRequest request ,Child child, UserAccount userAccount, DoctorOrganization doctororganization, Enterprise enterprise, EcoSystem business, ChildDirectory directory) {
-            
         initComponents();
-        this.userProcessContainer= userProcessContainer;
-      this.request = request;
+        this.userProcessContainer = userProcessContainer;
+        this.request = request;
         this.enterprise = enterprise;
         this.userAccount = userAccount;
-        this.childdirectory=directory;
+        this.childdirectory = directory;
         this.child = child;
         this.doctororganization = doctororganization;
         this.business = business;
-        
-         for(Network net: business.getNetworkList()){
-      for(Enterprise ent: net.getEnterpriseDirectory().getEnterpriseList()){
-          if(ent.equals(enterprise)){
-              network= net;
-          }
-      }
-  }
+
+        for (Network net : business.getNetworkList()) {
+            for (Enterprise ent : net.getEnterpriseDirectory().getEnterpriseList()) {
+                if (ent.equals(enterprise)) {
+                    network = net;
+                }
+            }
+        }
         getChildDetails();
         populateRequestTable();
         populatePrescriptionTable();
-        
-       
-        
-        
-        
-    
-    }
-    
-    public void populateRequestTable(){
-        
-        
-        DefaultTableModel model = (DefaultTableModel) workRequestJTable1.getModel();
-        
-        model.setRowCount(0);
-        for (WorkRequest labrequest : userAccount.getWorkQueue().getWorkRequestList()){
-              if(labrequest instanceof DoctorWorkRequest || labrequest instanceof LabTestWorkRequest ){
-                  if( labrequest.getChildId() == child.getChildId()){
-            Object[] row = new Object[model.getColumnCount()];
-            
-            row[1] = labrequest.getChildId();
-            row[2] = child.getChildname();
-            row[0] = labrequest;
-            row[3] = labrequest.getReceiver();
-            row[4] = labrequest.getStatus();
-            if(labrequest instanceof DoctorWorkRequest){
-                 String result = ((DoctorWorkRequest) labrequest).getTestResult();
-                  row[5] = result == null ? "Waiting" : result;
-            }
-            else if(labrequest instanceof LabTestWorkRequest){
-                String result = ((LabTestWorkRequest) labrequest).getTestResult();
-            row[5] = result == null ? "Waiting" : result;
-            }
-         model.addRow(row);
-                  }
-              }
-        
-            
-        }
-    }
-    
-    public void populatePrescriptionTable(){
-        
-        DefaultTableModel model = (DefaultTableModel) PrescriptionRequestJTable.getModel();
-        
-        model.setRowCount(0);
-        for (WorkRequest pharrequest : userAccount.getWorkQueue().getWorkRequestList()){
-            
-            
-            if(pharrequest instanceof DoctorWorkRequest || pharrequest instanceof PharmacistWorkRequest ){
-             if( pharrequest.getChildId() == child.getChildId()){
-                    
-            Object[] row = new Object[model.getColumnCount()];
-                
-            row[0]= pharrequest;
-            row[1] = request.getChildId();
-            row[2]= child.getChildname();
-            row[3] = pharrequest.getReceiver();
-            row[4]= pharrequest.getStatus();
-            
-            
-            if(pharrequest instanceof DoctorWorkRequest){
-                 String result = ((DoctorWorkRequest) pharrequest).getTestResult();
-                  row[5] = result == null ? "Prescribed Medicine" : result;
-            }
-            else if(pharrequest instanceof PharmacistWorkRequest){
-                String result = ((PharmacistWorkRequest) pharrequest).getTestResult();
-            row[5] = result == null ? "Waiting" : result;
-            }
-            
-            if(pharrequest instanceof DoctorWorkRequest){
-                 String medicalPrescription = ((DoctorWorkRequest) pharrequest).getMedicinePrescribed();
-            row[6] = medicalPrescription == null ? "": medicalPrescription;
-            }
-            else if(pharrequest instanceof PharmacistWorkRequest){
-               String medicalPrescription = ((PharmacistWorkRequest) pharrequest).getMedicinePrescribed();
-            row[6] = medicalPrescription == null ? "": medicalPrescription;
-            }
-            
-           model.addRow(row);
-             }
-        }
-        
-            
-                  
-       }       
+
     }
 
+    public void populateRequestTable() {
+
+        DefaultTableModel model = (DefaultTableModel) workRequestJTable1.getModel();
+
+        model.setRowCount(0);
+        for (WorkRequest labrequest : userAccount.getWorkQueue().getWorkRequestList()) {
+            if (labrequest instanceof DoctorWorkRequest || labrequest instanceof LabTestWorkRequest) {
+                if (labrequest.getChildId() == child.getChildId()) {
+                    Object[] row = new Object[model.getColumnCount()];
+
+                    row[1] = labrequest.getChildId();
+                    row[2] = child.getChildname();
+                    row[0] = labrequest;
+                    row[3] = labrequest.getReceiver();
+                    row[4] = labrequest.getStatus();
+                    if (labrequest instanceof DoctorWorkRequest) {
+                        String result = ((DoctorWorkRequest) labrequest).getTestResult();
+                        row[5] = result == null ? "Waiting" : result;
+                    } else if (labrequest instanceof LabTestWorkRequest) {
+                        String result = ((LabTestWorkRequest) labrequest).getTestResult();
+                        row[5] = result == null ? "Waiting" : result;
+                    }
+                    model.addRow(row);
+                }
+            }
+
+        }
+    }
+
+    public void populatePrescriptionTable() {
+
+        DefaultTableModel model = (DefaultTableModel) PrescriptionRequestJTable.getModel();
+
+        model.setRowCount(0);
+        for (WorkRequest pharrequest : userAccount.getWorkQueue().getWorkRequestList()) {
+
+            if (pharrequest instanceof DoctorWorkRequest || pharrequest instanceof PharmacistWorkRequest) {
+                if (pharrequest.getChildId() == child.getChildId()) {
+
+                    Object[] row = new Object[model.getColumnCount()];
+
+                    row[0] = pharrequest;
+                    row[1] = request.getChildId();
+                    row[2] = child.getChildname();
+                    row[3] = pharrequest.getReceiver();
+                    row[4] = pharrequest.getStatus();
+
+                    if (pharrequest instanceof DoctorWorkRequest) {
+                        String result = ((DoctorWorkRequest) pharrequest).getTestResult();
+                        row[5] = result == null ? "Prescribed Medicine" : result;
+                    } else if (pharrequest instanceof PharmacistWorkRequest) {
+                        String result = ((PharmacistWorkRequest) pharrequest).getTestResult();
+                        row[5] = result == null ? "Waiting" : result;
+                    }
+
+                    if (pharrequest instanceof DoctorWorkRequest) {
+                        String medicalPrescription = ((DoctorWorkRequest) pharrequest).getMedicinePrescribed();
+                        row[6] = medicalPrescription == null ? "" : medicalPrescription;
+                    } else if (pharrequest instanceof PharmacistWorkRequest) {
+                        String medicalPrescription = ((PharmacistWorkRequest) pharrequest).getMedicinePrescribed();
+                        row[6] = medicalPrescription == null ? "" : medicalPrescription;
+                    }
+
+                    model.addRow(row);
+                }
+            }
+
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -184,7 +161,6 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        genderButtonGroup = new javax.swing.ButtonGroup();
         jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         nameTextField = new javax.swing.JTextField();
@@ -217,6 +193,7 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
         workRequestJTable1 = new javax.swing.JTable();
         jLabel13 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        dateField = new javax.swing.JTextField();
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Personal Info");
@@ -260,11 +237,9 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Gender:");
 
-        genderButtonGroup.add(maleRDB);
         maleRDB.setText("Male");
         maleRDB.setEnabled(false);
 
-        genderButtonGroup.add(femaleRDB);
         femaleRDB.setText("Female");
         femaleRDB.setEnabled(false);
 
@@ -355,6 +330,8 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
             }
         });
 
+        dateField.setForeground(new java.awt.Color(242, 242, 242));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -370,14 +347,7 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
                                 .addComponent(imageLable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(153, 153, 153)
-                                .addComponent(maleRDB)
-                                .addGap(39, 39, 39)
-                                .addComponent(femaleRDB))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel12)
@@ -396,7 +366,17 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
                                     .addComponent(BloodPressureTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(PulseRateTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(BodyTempTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(153, 153, 153)
+                                .addComponent(maleRDB)
+                                .addGap(39, 39, 39)
+                                .addComponent(femaleRDB))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(1051, 1051, 1051))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -409,7 +389,7 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
                         .addGap(331, 331, 331)
                         .addComponent(vitalsignsbtn))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(740, 740, 740)
+                        .addGap(718, 718, 718)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -463,9 +443,11 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(ageComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(38, 38, 38)
-                                .addComponent(jLabel11)
-                                .addGap(37, 37, 37)
+                                .addGap(35, 35, 35)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel11)
+                                    .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(maleRDB)
@@ -491,22 +473,20 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
                         .addGap(52, 52, 52))))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void requestTestJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestTestJButtonActionPerformed
 
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        userProcessContainer.add("RequestLabTestJPanel", new RequestLabTestJPanel(userProcessContainer, userAccount, enterprise,child, childdirectory,request ,business));
+        userProcessContainer.add("RequestLabTestJPanel", new RequestLabTestJPanel(userProcessContainer, userAccount, enterprise, child, childdirectory, request, business));
         layout.next(userProcessContainer);
-        
-        
-        
+
 
     }//GEN-LAST:event_requestTestJButtonActionPerformed
 
     private void btnPrescribeMedicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrescribeMedicationActionPerformed
         // TODO add your handling code here:
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        userProcessContainer.add("PrescribeMedicationJPanel", new PrescribeMedicationJPanel(userProcessContainer, userAccount,  enterprise ,child, childdirectory,request ,business));
+        userProcessContainer.add("PrescribeMedicationJPanel", new PrescribeMedicationJPanel(userProcessContainer, userAccount, enterprise, child, childdirectory, request, business));
         layout.next(userProcessContainer);
     }//GEN-LAST:event_btnPrescribeMedicationActionPerformed
 
@@ -520,99 +500,75 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
 
     private void vitalsignsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vitalsignsbtnActionPerformed
         // TODO add your handling code here:
-       if(BloodPressureTxtField.getText().isEmpty() || PulseRateTxtField.getText().isEmpty() || BodyTempTxtField.getText().isEmpty() || RespirationRateTxtField.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"Vital Signs cannot be empty");
+        if (BloodPressureTxtField.getText().isEmpty() || PulseRateTxtField.getText().isEmpty() || BodyTempTxtField.getText().isEmpty() || RespirationRateTxtField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vital Signs cannot be empty");
             return;
+        } //       else if( temperature < 0 || pulserate < 0 || BP < 0 || respirationrate < 0 )
+        //       {
+        //           JOptionPane.showMessageDialog(null,"Vital Signs cannot be negative");
+        //       }
+        //       
+        else {
+            try {
+                temperature = Double.parseDouble(BodyTempTxtField.getText());
+                if (temperature <= 0.0) {
+                    JOptionPane.showMessageDialog(null, "Body Temperature should be a positive integer");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Please enter in number format for Temperature");
+                return;
+            }
+
+            try {
+                pulserate = Double.parseDouble(PulseRateTxtField.getText());
+                if (pulserate <= 0.0) {
+                    JOptionPane.showMessageDialog(null, "Pulse Rate should be a positive integer");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Please enter in number format for Pulse rate");
+                return;
+            }
+
+            try {
+                BP = Double.parseDouble(BloodPressureTxtField.getText());
+                if (BP <= 0.0) {
+                    JOptionPane.showMessageDialog(null, "Bloodpressure should be a positive integer");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Please enter in number format for Blood Pressure");
+
+                return;
+            }
+
+            try {
+                respirationrate = Double.parseDouble(RespirationRateTxtField.getText());
+                if (respirationrate <= 0.0) {
+                    JOptionPane.showMessageDialog(null, "Respiration rate should be a positive integer");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Please enter in number format for Repirationrate");
+                return;
+            }
         }
-       
-//       else if( temperature < 0 || pulserate < 0 || BP < 0 || respirationrate < 0 )
-//       {
-//           JOptionPane.showMessageDialog(null,"Vital Signs cannot be negative");
-//       }
-//       
-       else {
-           try
-            {  
-                  temperature = Double.parseDouble(BodyTempTxtField.getText());
-                 if (temperature <= 0.0)
-                 {
-                     JOptionPane.showMessageDialog(null,"Body Temperature should be a positive integer");
-                     return;
-                 }
-            }
-        catch(NumberFormatException e )
-            {
-                JOptionPane.showMessageDialog(null,"Please enter in number format for Temperature");
-                return;
-            }
-        
-        
-        try
-            {
-                 pulserate = Double.parseDouble(PulseRateTxtField.getText());
-                if( pulserate <= 0.0)
-            {
-              JOptionPane.showMessageDialog(null,"Pulse Rate should be a positive integer");
-              return;
-            }
-            }
-        catch(NumberFormatException e )
-            {
-                JOptionPane.showMessageDialog(null,"Please enter in number format for Pulse rate");
-                return;
-            }
-        
-        
-        
-        try
-            {
-                 BP = Double.parseDouble(BloodPressureTxtField.getText());
-                if( BP <= 0.0)
-                     {
-                        JOptionPane.showMessageDialog(null,"Bloodpressure should be a positive integer");
-                        return;
-                     }
-            }
-        catch(NumberFormatException e )
-            {
-                JOptionPane.showMessageDialog(null,"Please enter in number format for Blood Pressure");
-                
-                return;
-            }
-        
-        
-        try
-            {
-                 respirationrate = Double.parseDouble(RespirationRateTxtField.getText());
-                 if( respirationrate <= 0.0)
-                    {
-                        JOptionPane.showMessageDialog(null,"Respiration rate should be a positive integer");
-                        return;
-                    }
-            }
-        catch(NumberFormatException e )
-            {
-                JOptionPane.showMessageDialog(null,"Please enter in number format for Repirationrate");
-                return;
-            }
-       }
-        
-        
+
         child.setBP(BP);
         child.setBodytemp(temperature);
         child.setPulseRate(pulserate);
         child.setRespirationRate(respirationrate);
-        
+
         BodyTempTxtField.setEnabled(true);
         PulseRateTxtField.setEnabled(true);
         BloodPressureTxtField.setEnabled(true);
         RespirationRateTxtField.setEnabled(true);
-        
+
         requestTestJButton.setEnabled(true);
         btnPrescribeMedication.setEnabled(true);
-        
-        
+
+
     }//GEN-LAST:event_vitalsignsbtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -622,7 +578,7 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
         Component component = componentArray[componentArray.length - 1];
         DoctorJPanel dwjp = (DoctorJPanel) component;
         dwjp.populateRequestTable();
-        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -640,8 +596,8 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField RespirationRateTxtField;
     private javax.swing.JComboBox ageComboBox;
     private javax.swing.JButton btnPrescribeMedication;
+    private javax.swing.JTextField dateField;
     private javax.swing.JRadioButton femaleRDB;
-    private javax.swing.ButtonGroup genderButtonGroup;
     private javax.swing.JLabel imageLable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -668,57 +624,47 @@ public class AssignedChildJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void getChildDetails() {
-       
+
         nameTextField.setText(child.getChildname());
         ageComboBox.setSelectedIndex(child.getChildAge());
-        if(child.getChildGender().equalsIgnoreCase("male")){
+        if (child.getChildGender().equalsIgnoreCase("male")) {
             maleRDB.setSelected(true);
-        }
-        else
-        {
+        } else {
             femaleRDB.setSelected(true);
         }
-        childRegistrationDate.setDate(child.getRegistrationDate());
+        /*childRegistrationDate.setDate(child.getRegistrationDate());*/dateField.setText(child.getRegistrationDate().toString());
         IdentificationMArkTextArea.setText(child.getIdentificationMark());
         BodyTempTxtField.setText(String.valueOf(child.getBodytemp()));
         PulseRateTxtField.setText(String.valueOf(child.getPulseRate()));
         BloodPressureTxtField.setText(String.valueOf(child.getBP()));
         RespirationRateTxtField.setText(String.valueOf(child.getRespirationRate()));
-        
-         if( child.getBodytemp() == 0.0 || child.getBP() == 0.0 || child.getPulseRate() == 0.0 || child.getRespirationRate() == 0.0)
-        {
+
+        if (child.getBodytemp() == 0.0 || child.getBP() == 0.0 || child.getPulseRate() == 0.0 || child.getRespirationRate() == 0.0) {
             requestTestJButton.setEnabled(false);
             btnPrescribeMedication.setEnabled(false);
-        }
-         else{
-             requestTestJButton.setEnabled(true);
+        } else {
+            requestTestJButton.setEnabled(true);
             btnPrescribeMedication.setEnabled(true);
-         }
-        
-        
-        
+        }
+
         displayImage();
     }
 
-     public void displayImage(){
+    public void displayImage() {
         BufferedImage image = null; //Buffered image object
         String filename = child.getImageDetails(); //Getting the filepath and storing into the string
-        
-        
-        try{
+
+        try {
             image = ImageIO.read(new File(filename));  //Reading the filename and storing it in image
-        }catch(Exception e){ //Generic exception if something goes wrong while reading the image
+        } catch (Exception e) { //Generic exception if something goes wrong while reading the image
             JOptionPane.showMessageDialog(null, "File not found");
         }
-       
-  //Setting the image to the icon and then passing it ot he image JLabel    
-  
-ImageIcon icon = new ImageIcon(image);
-   imageLable.setIcon(icon);
-    
+
+        //Setting the image to the icon and then passing it ot he image JLabel    
+        ImageIcon icon = new ImageIcon(image);//ImageIcon icon = new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(imageLable.getWidth(), imageLable.getHeight(), Image.SCALE_SMOOTH));
+        imageLable.setIcon(icon);
+
+        
     }
 
-    
-  
 }
-

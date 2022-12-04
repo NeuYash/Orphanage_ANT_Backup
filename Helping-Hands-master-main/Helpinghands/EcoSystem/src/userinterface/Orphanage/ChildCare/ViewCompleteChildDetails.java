@@ -72,7 +72,7 @@ public class ViewCompleteChildDetails extends javax.swing.JPanel {
         else if(child.getChildGender().equalsIgnoreCase("female")){
             femaleRDB.setSelected(true);
         }
-        jXDatePicker1.setDate(child.getRegistrationDate());
+        /*jXDatePicker1.setDate(child.getRegistrationDate());*/dateTextField.setText(child.getRegistrationDate().toString());
         identficationMarkText.setText(child.getIdentificationMark());
         bpText.setText(String.valueOf(child.getBP()));
         pulseText.setText(String.valueOf(child.getPulseRate()));
@@ -166,6 +166,7 @@ ImageIcon icon = new ImageIcon(image);
         pulseText = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        dateTextField = new javax.swing.JTextField();
 
         setMinimumSize(new java.awt.Dimension(50, 50));
 
@@ -377,6 +378,8 @@ ImageIcon icon = new ImageIcon(image);
                                 .addComponent(jScrollPane2))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(112, 112, 112)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -410,7 +413,9 @@ ImageIcon icon = new ImageIcon(image);
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -517,6 +522,7 @@ ImageIcon icon = new ImageIcon(image);
     private javax.swing.JTextField bpText;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox closetchkbix;
+    private javax.swing.JTextField dateTextField;
     private javax.swing.JRadioButton femaleRDB;
     private javax.swing.JButton finBtn;
     private javax.swing.JTextArea identficationMarkText;
@@ -559,7 +565,7 @@ ImageIcon icon = new ImageIcon(image);
     femaleRDB.setEnabled(false);
       bpText.setEnabled(false);
       identficationMarkText.setEnabled(false);
-      jXDatePicker1.setEnabled(false);
+      /*jXDatePicker1.setEnabled(false);*/ dateTextField.setEditable(false);
       maleRDB.setEnabled(false);
       medicalTextArea.setEnabled(false);
       nameTextField.setEnabled(false);

@@ -58,7 +58,7 @@ public class RegisterNewChildJPanel extends javax.swing.JPanel {
        this.enterprise=enterprise;
        this.business = business;
 this.organization =(ChildRegistrationOrganization) organization;
-jXDatePicker1.getMonthView().setUpperBound(new Date());
+//jXDatePicker1.getMonthView().setUpperBound(new Date());
 
  for(Network net: business.getNetworkList()){
       for(Enterprise ent: net.getEnterpriseDirectory().getEnterpriseList()){
@@ -98,6 +98,7 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        dateTextField = new javax.swing.JTextField();
 
         jLabel8.setText("jLabel8");
 
@@ -187,7 +188,7 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(maleRDB)
                                         .addGap(18, 18, 18)
@@ -201,7 +202,8 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
                                                 .addComponent(photoText, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(uploadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(48, 48, 48)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -231,7 +233,9 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
                     .addComponent(femaleRDB, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -280,7 +284,7 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
                 else if(femaleRDB.isSelected()){
                     gender = "Female";
                 }
-                Date date = jXDatePicker1.getDate();
+               /* Date date = jXDatePicker1.getDate();
                 DateFormat formatit = new SimpleDateFormat("yyyy-MM-dd");
                 String temp = "";
                 
@@ -290,7 +294,7 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
                     regDate = formatit.parse(temp);
                 } catch (Exception ex) {
                   JOptionPane.showMessageDialog(null, "Please select the registration date");
-                }
+                }*/
                 String identificationMark = jTextArea1.getText();
                 
                 
@@ -304,7 +308,7 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
                 child.setChildname(childName);
                 child.setIdentificationMark(identificationMark);
                 child.setImageDetails(photoText.getText());
-                child.setRegistrationDate(regDate);
+                /*child.setRegistrationDate(regDate);*/child.setRegistrationDate(new SimpleDateFormat("yyyy-MM-dd").parse(dateTextField.getText()));
                 child.setChildGender(gender);
                 child.setStatus("Newly Registered");
                 child.setMedicalStatus(child.getMedicalStatus()+"\n"+"Medically Unfit");
@@ -372,6 +376,7 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ageComboBox;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JTextField dateTextField;
     private javax.swing.JRadioButton femaleRDB;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -408,7 +413,7 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
       //String format = formait.format(date);
 //     Date todayDate = formait.parse(format);
 //     
-     String selectedFormaString ="";
+    /* String selectedFormaString ="";
       try{
       Date selected = jXDatePicker1.getDate();
     selectedFormaString = formait.format(selected);
@@ -416,7 +421,12 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
      catch(Exception e){
       JOptionPane.showMessageDialog(null, "Please select the registration date");
       return true;
-     }
+     }*/ //dateformat validation
+    String datePattern="^((19|20)[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
+    if(!Pattern.matches(datePattern, dateTextField.getText())){
+        JOptionPane.showMessageDialog(null, "Please enter date in yyyy-MM-dd");
+        return true;
+    }
 //     Date selectedDate = formait.parse(selectedFormaString);
  
      if(nameTextField.getText().isEmpty()){
@@ -435,14 +445,23 @@ jXDatePicker1.getMonthView().setUpperBound(new Date());
          JOptionPane.showMessageDialog(null, "Please select the gender of the child");
          return true;
      }
-//     else if(selectedDate.after(todayDate)){
-//         JOptionPane.showMessageDialog(null, "Registration date cannot be before");
-//         return true;
-//     }
+     /*else if(selectedDate.after(todayDate)){
+         JOptionPane.showMessageDialog(null, "Registration date cannot be before");
+         return true;
+     }
      else if(selectedFormaString.isEmpty())
      {
         JOptionPane.showMessageDialog(null, "Please select the registration date");
          return true;  
+     }*/
+     else if(dateTextField.getText().isEmpty())
+     {
+        JOptionPane.showMessageDialog(null, "Please select the registration date");
+         return true;  
+     }
+     else if(new SimpleDateFormat("yyyy-MM-dd").parse(dateTextField.getText()).compareTo(new Date())>1){
+         JOptionPane.showMessageDialog(null, "Registration date cannot be in future");
+         return true;
      }
      else if(jTextArea1.getText().isEmpty()){
          JOptionPane.showMessageDialog(null, "Please enter the identification mark. If there are none, please write NA/None");
